@@ -91,6 +91,9 @@ function isLoggedIn(req,res,next){
     next();
   }
 }
+function abcd(){
+  console.log("its a dummy function");
+}
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
