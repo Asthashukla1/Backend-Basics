@@ -1,47 +1,50 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>Login - InstaClone</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-zinc-900 flex items-center justify-center h-screen">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
-  <!-- Card Container -->
-  <div class="bg-zinc-800 p-8 rounded-2xl shadow-lg w-full max-w-md">
-    <h2 class="text-2xl font-semibold text-white mb-6 text-center">Login</h2>
+  <!-- Login Card -->
+  <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-lg border border-gray-200">
+    <h2 class="text-3xl font-bold text-pink-500 mb-6 text-center">Login to InstaClone</h2>
 
-    <form method="post" action="/login" class="space-y-4">
+    <form method="POST" action="/login" class="space-y-4">
 
       <!-- Email -->
       <input 
-        class="w-full px-4 py-2 rounded-lg bg-zinc-900 border border-zinc-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         type="email" 
         name="email" 
-        placeholder="Email" 
-        required>
+        placeholder="Email"
+        required
+        class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500 placeholder-gray-400"
+      />
 
       <!-- Password -->
       <input 
-        class="w-full px-4 py-2 rounded-lg bg-zinc-900 border border-zinc-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         type="password" 
         name="password" 
-        placeholder="Password" 
-        required>
+        placeholder="Password"
+        required
+        class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500 placeholder-gray-400"
+      />
 
       <!-- Submit Button -->
       <button 
         type="submit" 
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200">
+        class="w-full bg-pink-500 hover:bg-pink-600 text-white font-medium py-3 rounded-lg transition duration-200">
         Login
       </button>
+
     </form>
 
     <!-- Extra Links -->
-    <p class="text-gray-400 text-sm text-center mt-4">
+    <p class="text-gray-500 text-sm text-center mt-4">
       Don’t have an account? 
-      <a href="/register" class="text-blue-500 hover:underline">Create one</a>
+      <a href="/" class="text-pink-500 hover:text-pink-400 font-medium">Create one</a>
     </p>
   </div>
 

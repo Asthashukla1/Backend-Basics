@@ -24,10 +24,50 @@ app.get("/logout", function (req, res) {
   res.redirect("/login");
 });
 
-app.get("/profile", isLoggedIn, function (req, res) {
-  res.cookie('token',"");
-  res.redirect("/login");
+app.get("/profile", isLoggedIn, async function (req, res) {
+  let user = await userModel.findOne({email:req.user.email}).populate("posts")
+  let posts = user.post;
+  res.render('profile', {user,posts});
 });
+
+app.get('/like/:id', isLoggedIn, async (req, res)=>{
+  let post = await postModel.findOne({_id: req.params.id}).populate('user');
+
+  if(post.likes.indexOf(req.user.userid)===-1){
+    post.likes.push(req.user.userid)
+  }
+else{
+  post.likes.splice(post.likes.indexOf(req.user.userid),1)
+}
+ 
+  await post.save();
+  res.redirect('/profile');
+});
+
+app.get('/edit/:id', isLoggedIn, async (req, res)=>{
+  let post = await postModel.findOne({_id: req.params.id}).populate('user');
+  res.render('edit', {post}) 
+});
+
+app.post('/edit/:id', isLoggedIn, async(req, res)=>{
+  const { content } = req.body;
+  const post = await postModel.findById(req.params.id);
+  post.content = content; // update content
+  await post.save();
+  res.redirect('/profile');
+})
+
+app.post('/post',isLoggedIn, async function(req,res){
+  let user = await userModel.findOne({email:req.user.email});
+  let {content} = req.body
+    let post = await postModel.create({
+      user:user._id,
+      content
+     });
+  user.posts.push(post._id);
+  await user.save();
+  res.redirect('profile')
+})
 
 app.post("/register", async function (req, res) {
   try {
@@ -58,7 +98,7 @@ app.post("/register", async function (req, res) {
 
         // send token in cookie
         res.cookie("token", token);
-        res.send("registered");
+        res.redirect("/profile");
       });
     });
   } catch (error) {
@@ -76,7 +116,7 @@ app.post("/login", async function (req, res) {
       if(result) {
         let token = jwt.sign({email:email,userid:user._id},'shhhhhhh');
         res.cookie('token', token);
-        res.status(200).send("you're logged in")
+        res.status(200).redirect("/profile")
         }
       else res.redirect('/login');
     })
@@ -84,15 +124,12 @@ app.post("/login", async function (req, res) {
 
 function isLoggedIn(req,res,next){
   if(req.cookies.token==='')
-    res.send('you are not logged in');
+    res.redirect('/login');
   else{
     let data = jwt.verify(req.cookies.token,"shhhhhhh")
     req.user = data;
     next();
   }
-}
-function abcd(){
-  console.log("its a dummy function");
 }
 
 app.listen(3000, () => {
